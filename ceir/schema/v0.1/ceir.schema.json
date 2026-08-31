@@ -21,23 +21,147 @@
     "source"
   ],
   "properties": {
-24-28:    "run_id": { … },
-29-34:    "ts": { … },
-35-39:    "harness": { … },
-40-44:    "workflow": { … },
-45-56:    "case_id": { … },
-57-65:    "outcome": { … },
-66-70:    "model": { … },
-71-75:    "tokens_in": { … },
-76-80:    "tokens_out": { … },
-81-84:    "cost_usd": { … },
-85-89:    "retries": { … },
-90-96:    "tool_costs": { … },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable identifier for one inference run. Log validation rejects duplicates."
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:(?:[0-5][0-9]|60)(\\.[0-9]+)?(Z|[+-](?:[01][0-9]|2[0-3]):[0-5][0-9])$",
+      "description": "RFC 3339 date-time with an explicit UTC offset."
+    },
+    "harness": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Harness or collector integration that produced the event."
+    },
+    "workflow": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Workflow label associated with the run."
+    },
+    "case_id": {
+      "description": "Case identifier; null is the explicit unattributed state.",
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "failed",
+        "escalated",
+        "abandoned"
+      ]
+    },
+    "model": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Model identifier used for inference."
+    },
+    "tokens_in": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "tokens_out": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "cost_usd": {
+      "$ref": "#/$defs/fixed_usd",
+      "description": "Non-negative fixed-point USD amount with at most six fractional digits."
+    },
+    "retries": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "tool_costs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tool_cost"
+      },
+      "description": "Optional typed tool charges; an empty array means no separate tool charges."
+    },
     "source": {
       "$ref": "#/$defs/source"
     }
   },
-101-166:  "$defs": { … }
+  "$defs": {
+    "fixed_usd": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$",
+      "description": "Decimal USD string: no sign, exponent, leading zero, or more than six fractional digits."
+    },
+    "tool_cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "cost_usd"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable tool-cost category or tool identifier."
+        },
+        "cost_usd": {
+          "$ref": "#/$defs/fixed_usd"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "collector_id",
+        "attribution"
+      ],
+      "properties": {
+        "collector_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable identifier of the collector or adapter."
+        },
+        "attribution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "cwd",
+            "git",
+            "task_label"
+          ],
+          "properties": {
+            "cwd": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Working directory from which the workflow/case was produced."
+            },
+            "git": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Repository/ref/commit provenance, or an explicit local-state label."
+            },
+            "task_label": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Task label that produced the workflow/case."
+            }
+          }
+        }
+      }
+    }
+  }
 }
-
-[…113ln elided; re-read needed ranges, e.g. /run/media/mustbearnold/Projects/Agent FinOps Meter/ceir/schema/v0.1/ceir.schema.json:24-28,29-34]

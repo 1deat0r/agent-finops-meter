@@ -1,0 +1,16 @@
+{
+  "registry": "agent-finops-meter",
+  "registry_version": 1,
+  "schemas": [
+    {
+      "name": "agent-finops-meter.ceir",
+      "version": "0.1.0",
+      "draft": "2020-12",
+      "media_type": "application/schema+json",
+      "url": "https://raw.githubusercontent.com/1deat0r/agent-finops-meter/main/ceir/schema/v0.1/ceir.schema.json",
+      "source": "https://github.com/1deat0r/agent-finops-meter/tree/main/ceir/schema/v0.1",
+      "sha256": "b5b1974869c9051c7ebc64080740372a0a88d42f8e9a08e8cd640a2a3cc128e0",
+      "canonicalization": "sorted-key canonical JSON"
+    }
+  ]
+}
