@@ -1,65 +1,30 @@
-# Agent FinOps Meter — W1 Lane A Plan
+# Agent FinOps Meter — W1 Execution Plan
 
 ## Scope
 
-Deliver CEIR v0.1 schema and golden fixtures for G1. This work covers the event contract, append-only JSONL hash-chain format, fail-closed validation, versioning policy, and publication evidence. Lane B vendor audit and all downstream adapters/wrappers remain out of scope for this execution slice.
+Lane A delivered the CEIR v0.1 schema, golden fixtures, append-only hash-chain format, fail-closed validators, versioning policy, and G1 publication evidence. Lane B now delivers the public vendor audit required for G0. Adapters, wrappers, harness hooks, gallery, calculator, and hosted services remain outside this W1 audit slice.
 
-## Execution sequence and stop point
+## Lane A completion and stop point
 
-1. Lock the CEIR v0.1 schema and event-log rules.
-2. Add eight fixture sets covering the required valid and failure edges.
-3. Add deterministic validators and run the acceptance checks.
-4. Measure the acceptance metrics and record evidence in `GATES.md`.
-5. Publish the repository artifacts and a versioned static schema-registry catalog entry.
-6. Stop at G1 and wait for adjudication; do not start the next brief from this plan.
+Lane A's G1 artifacts are complete and published. The CEIR contract is the shared interface for downstream work; changes after publication are red flags, not routine edits.
 
-## Implementation tree
+## Lane B — G0 vendor-audit execution
 
-```text
-ceir/
-  schema/v0.1/ceir.schema.json       JSON Schema draft 2020-12
-  event-log/v0.1/FORMAT.md           JSONL envelope, canonicalization, chain rules
-  fixtures/v0.1/                     eight named fixture sets
-  policy/v0.1/VERSIONING.md          semver and pre-1.0 compatibility policy
-registry/
-  catalog.json                       public versioned schema-registry index
-CHANGELOG.md                          release stub for v0.1.0
-scripts/
-  ceir-lib.mjs                       local validator and chain primitives
-  verify_ceir_schema.mjs             schema contract check
-  verify_ceir_fixtures.mjs           fixture matrix check
-  verify_ceir_log.mjs                 chain, duplicate, and ordering check
-  verify_ceir_policy.mjs              policy/changelog contract check
-```
+1. Define the strict CFO-facing test: completed case/workflow cost, explicit chargeback/showback/allocation, and cost attribution for retry, failed, abandoned, and unattributed work.
+2. Review roughly ten agent/LLM observability products using primary official documentation, APIs, and source repositories only.
+3. Separate finance-unit economics from engineer-facing traces, token/latency dashboards, request/session rollups, and raw spend views.
+4. Publish one cited competitive-landscape table in research/vendor-audit.md.
+5. Run the reproducible audit check, independently verify cited source availability, measure the strict pass count, and apply the fixed G0 decision rule.
+6. Post G0 evidence and stop for adjudication; do not begin another gate or change scope/date from this plan.
 
-## Contract decisions
+## Audit artifact tree
 
-- CEIR records are strict objects: unknown fields are rejected; required fields cannot be omitted.
-- `case_id: null` is the explicit unattributed state. Empty strings are invalid.
-- `cost_usd` and tool costs are decimal strings, never binary JSON numbers: non-negative, no leading zeroes, and at most six fractional digits.
-- `ts` is RFC 3339 date-time with an explicit UTC offset. Validation rejects malformed timestamps instead of coercing them.
-- A log line is `{prev_hash,event,hash}`. `hash = SHA-256(prev_hash + canonical_json(event))`; the first `prev_hash` is 64 zeroes. The `hash` field is excluded from the hashed input.
-- Canonical JSON is pinned to recursively sorted object keys, array order preserved, UTF-8 JSON with no insignificant whitespace, and no non-finite values. The exact algorithm is documented beside the format.
-- Append order is authoritative. A timestamp regression is reported as out-of-order/late-arriving and rejected by the strict verifier; existing lines are never rewritten or silently reordered.
-- Duplicate `run_id` values are rejected even when their hashes are valid.
+research/vendor-audit.md is the single public competitive-landscape artifact. It records the as-of date, selection rationale, criteria, per-vendor statuses, primary-source links, strict count, and conservative recommendation.
 
-## Fixture matrix
-
-| Set | Contract edge | Expected result |
-|---|---|---|
-| `01-outcomes` | completed, failed, escalated, abandoned | all schema-valid |
-| `02-retry-chain` | retry count and repeated run attempts | schema-valid; chain-valid |
-| `03-tool-costs` | typed non-empty tool costs | schema-valid |
-| `04-unattributed` | `case_id: null` | schema-valid |
-| `05-malformed` | missing/invalid fields and unknown property | rejected, never coerced |
-| `06-hash-break` | tampered event/hash | chain rejected |
-| `07-duplicate-run-id` | duplicate identifier | log rejected |
-| `08-late-out-of-order` | timestamp regression in append order | log rejected with ordering diagnostic |
+scripts/verify_vendor_audit.mjs checks the artifact's vendor-row count, evidence-section count, status cells, source-link coverage, and strict CFO-facing count.
 
 ## Acceptance evidence
 
-- A1: schema check exits zero and prints the decisive success token.
-- A2: fixture check reports every valid record accepted and every malformed record rejected; no coercions occur.
-- A3: log check reports tamper, duplicate, and ordering detections.
-- A4: policy check confirms semver, additive-only pre-1.0 rules, and changelog stub.
-- G1: public repository URL plus indexed schema-registry URL; publication is not claimed until both are observed.
+- G0: audit check exits zero and reports ten vendors with ten evidence sections, cited source URLs, and a strict CFO-facing count of zero.
+- G0 decision: 0–1 qualifying vendors preserves the “almost none” positioning; 2+ would require same-day repositioning to cross-harness neutrality + local-first.
+- After posting G0 evidence, wait for adjudication. No downstream implementation is authorized by this plan.

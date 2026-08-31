@@ -1,8 +1,10 @@
-# Gates: W1 Lane A CEIR v0.1
+# Gates: W1 Lane A CEIR v0.1 and Lane B G0
 
-OWNS: ceir/**, scripts/ceir-lib.mjs, scripts/verify_ceir*.mjs, registry/**, GATES.md
+OWNS: ceir/**, research/vendor-audit.md, scripts/ceir-lib.mjs, scripts/verify_ceir*.mjs, scripts/verify_vendor_audit.mjs, registry/**, GATES.md
 
-Scope: Deliver the CEIR v0.1 schema, pinned event-log rules, golden fixtures, versioning policy, and public publication evidence.
+Scope: Deliver the CEIR v0.1 schema, pinned event-log rules, golden fixtures, versioning policy, public publication evidence, and the Lane B vendor audit required for G0.
+
+## Lane A — CEIR v0.1
 
 - [x] A1: CEIR schema is valid draft 2020-12 JSON Schema and declares every required event field
   CHECK: node scripts/verify_ceir_schema.mjs
@@ -26,3 +28,10 @@ Scope: Deliver the CEIR v0.1 schema, pinned event-log rules, golden fixtures, ve
 
 - [x] G1: Schema and fixtures are publicly published and the registry entry is indexed
   EVIDENCE: public smoke exit 0; schema_bytes=4413, schema_sha256=b5b1974869c9051c7ebc64080740372a0a88d42f8e9a08e8cd640a2a3cc128e0, catalog_entries=1, fixture_sets=8, fixture_jsonl_records=19; commit=https://github.com/1deat0r/agent-finops-meter/commit/217dd28af54bbe60cf9751153a006988f64ec257; schema=https://github.com/1deat0r/agent-finops-meter/blob/main/ceir/schema/v0.1/ceir.schema.json; fixtures=https://github.com/1deat0r/agent-finops-meter/tree/main/ceir/fixtures/v0.1; registry=https://github.com/1deat0r/agent-finops-meter/blob/main/registry/catalog.json
+
+## Lane B — G0 vendor audit
+
+- [x] G0: Public competitive-landscape table audits roughly ten vendors against CFO unit-economics criteria and applies the fixed positioning rule
+  CHECK: node scripts/verify_vendor_audit.mjs
+  EXPECT: Vendor audit verification passed
+  EVIDENCE: exit 0; as_of=2026-09-01, vendors=10, vendor_evidence_sections=10, source_urls=68, unique_source_urls=50, strict_cfo_vendors=0/10. Source availability check: 47 unique URLs returned HTTP 200 to HEAD and the remaining 3 returned HTTP 200 to GET fallback; no final source check was non-200. Decision under the contract: 0–1 vendors ship CFO-facing unit economics, so retain the “almost none” positioning. Public artifact: https://github.com/1deat0r/agent-finops-meter/blob/main/research/vendor-audit.md
