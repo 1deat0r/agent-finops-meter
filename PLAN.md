@@ -10,7 +10,7 @@ Deliver CEIR v0.1 schema and golden fixtures for G1. This work covers the event 
 2. Add eight fixture sets covering the required valid and failure edges.
 3. Add deterministic validators and run the acceptance checks.
 4. Measure the acceptance metrics and record evidence in `GATES.md`.
-5. Publish the repository artifacts and a schema-registry entry.
+5. Publish the repository artifacts and a versioned static schema-registry catalog entry.
 6. Stop at G1 and wait for adjudication; do not start the next brief from this plan.
 
 ## Implementation tree
@@ -21,6 +21,8 @@ ceir/
   event-log/v0.1/FORMAT.md           JSONL envelope, canonicalization, chain rules
   fixtures/v0.1/                     eight named fixture sets
   policy/v0.1/VERSIONING.md          semver and pre-1.0 compatibility policy
+registry/
+  catalog.json                       public versioned schema-registry index
 CHANGELOG.md                          release stub for v0.1.0
 scripts/
   ceir-lib.mjs                       local validator and chain primitives
