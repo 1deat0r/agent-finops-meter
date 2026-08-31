@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-finops-meter:ceir:v0.1",
+  "title": "Cost Event Interchange Record",
+  "description": "A single local-first agent inference cost event. Decimal USD amounts are strings to preserve fixed-point precision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_id",
+    "ts",
+    "harness",
+    "workflow",
+    "case_id",
+    "outcome",
+    "model",
+    "tokens_in",
+    "tokens_out",
+    "cost_usd",
+    "retries",
+    "tool_costs",
+    "source"
+  ],
+  "properties": {
+24-28:    "run_id": { … },
+29-34:    "ts": { … },
+35-39:    "harness": { … },
+40-44:    "workflow": { … },
+45-56:    "case_id": { … },
+57-65:    "outcome": { … },
+66-70:    "model": { … },
+71-75:    "tokens_in": { … },
+76-80:    "tokens_out": { … },
+81-84:    "cost_usd": { … },
+85-89:    "retries": { … },
+90-96:    "tool_costs": { … },
+    "source": {
+      "$ref": "#/$defs/source"
+    }
+  },
+101-166:  "$defs": { … }
+}
+
+[…113ln elided; re-read needed ranges, e.g. /run/media/mustbearnold/Projects/Agent FinOps Meter/ceir/schema/v0.1/ceir.schema.json:24-28,29-34]

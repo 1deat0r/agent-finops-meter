@@ -1,0 +1,72 @@
+{
+  "version": "0.1",
+  "sets": [
+    {
+      "id": "01-outcomes",
+      "kind": "events",
+      "path": "01-outcomes.jsonl",
+      "expect": "valid",
+      "records": 4,
+      "covers": ["completed", "failed", "escalated", "abandoned"]
+    },
+    {
+      "id": "02-retry-chain",
+      "kind": "log",
+      "path": "02-retry-chain.jsonl",
+      "expect": "valid",
+      "records": 2,
+      "covers": ["retry chain", "append-only hash chain"]
+    },
+    {
+      "id": "03-tool-costs",
+      "kind": "events",
+      "path": "03-tool-costs.jsonl",
+      "expect": "valid",
+      "records": 1,
+      "covers": ["non-empty typed tool_costs"]
+    },
+    {
+      "id": "04-unattributed",
+      "kind": "events",
+      "path": "04-unattributed.jsonl",
+      "expect": "valid",
+      "records": 1,
+      "covers": ["case_id null", "unattributed event"]
+    },
+    {
+      "id": "05-malformed",
+      "kind": "events",
+      "path": "05-malformed.jsonl",
+      "expect": "reject",
+      "records": 5,
+      "covers": ["missing field", "wrong type", "unknown property", "empty case_id", "unknown outcome"]
+    },
+    {
+      "id": "06-hash-break",
+      "kind": "log",
+      "path": "06-hash-break.jsonl",
+      "expect": "reject",
+      "records": 2,
+      "diagnostics": ["hash mismatch"],
+      "covers": ["tampered event detection"]
+    },
+    {
+      "id": "07-duplicate-run-id",
+      "kind": "log",
+      "path": "07-duplicate-run-id.jsonl",
+      "expect": "reject",
+      "records": 2,
+      "diagnostics": ["duplicate run_id"],
+      "covers": ["duplicate run_id detection"]
+    },
+    {
+      "id": "08-late-out-of-order",
+      "kind": "log",
+      "path": "08-late-out-of-order.jsonl",
+      "expect": "reject",
+      "records": 2,
+      "diagnostics": ["out-of-order timestamp"],
+      "covers": ["late-arriving event", "timestamp regression"]
+    }
+  ]
+}
